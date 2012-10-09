@@ -74,6 +74,17 @@ function handler(event) {
     // Webkit
     if ( orgEvent.wheelDeltaY !== undefined ) { deltaY = orgEvent.wheelDeltaY/120; }
     if ( orgEvent.wheelDeltaX !== undefined ) { deltaX = -1*orgEvent.wheelDeltaX/120; }
+
+    // Webkit natural scrolling direction
+    // Note: Unfortunately only Safari sets this property correctly at present.
+    //       Chrome as of Version 22.0.1229.92 includes the property but it is always false
+    //       regardless of Natural Scrolling Direction user setting.
+    if ( orgEvent.webkitDirectionInvertedFromDevice !== undefined &&
+         orgEvent.webkitDirectionInvertedFromDevice === true ) {
+        deltaY = -deltaY;
+        deltaX = -deltaX;
+        delta  = -delta;
+    }
     
     // Add event and delta to the front of the arguments
     args.unshift(event, delta, deltaX, deltaY);
